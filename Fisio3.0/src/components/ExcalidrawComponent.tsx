@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Excalidraw, WelcomeScreen, MainMenu } from "@excalidraw/excalidraw";
+import React, { useState } from "react";
+import { Excalidraw, WelcomeScreen, MainMenu, Footer } from "@excalidraw/excalidraw";
 
 const ExcalidrawComponent = () => {
-  const [isClient, setIsClient] = useState(false);
-  const [excalidrawAPI, setExcalidrawAPI] = useState<ReturnType<typeof Excalidraw> | null>(null);
-  const excalidrawRef = useRef<ReturnType<typeof Excalidraw> | null>(null);
+  const [excalidrawAPI, setExcalidrawAPI] = useState<any>(null);
 
+  // Function to add a background image
   const addBackgroundImage = async (imageUrl: string) => {
     if (!excalidrawAPI) {
       console.error("Excalidraw API is not initialized yet");
@@ -17,6 +16,7 @@ const ExcalidrawComponent = () => {
 
     image.onload = () => {
       console.log("Image loaded successfully");
+
       const element = {
         id: `background-${Date.now()}`,
         type: "image",
@@ -24,18 +24,12 @@ const ExcalidrawComponent = () => {
         y: 0,
         width: image.width,
         height: image.height,
-        scale: 1,
-        fileId: imageUrl,
-        status: "idle",
-        isBackground: true,
+        fileId: `image-${Date.now()}`,
+        locked: true, // Lock the background image immediately
       };
 
-      excalidrawAPI.addElements([element]);
-
       excalidrawAPI.updateScene({
-        elements: excalidrawAPI
-          .getSceneElements()
-          .map((el: { id: string }) => (el.id === element.id ? { ...el, locked: true } : el)),
+        elements: [...excalidrawAPI.getSceneElements(), element],
       });
     };
 
@@ -44,35 +38,12 @@ const ExcalidrawComponent = () => {
     };
   };
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    console.log("Excalidraw API initialized:", excalidrawAPI);
-  }, [excalidrawAPI]);
-
-  if (!isClient) {
-    return null;
-  }
-
   return (
     <div style={{ height: "100%", position: "relative" }}>
-      <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 100 }}>
-        <button onClick={() => addBackgroundImage("/templates/field.jpeg")} disabled={!excalidrawAPI}>
-          Load Background 1
-        </button>
-        <button onClick={() => addBackgroundImage("/images/FisioLogo.png")} disabled={!excalidrawAPI}>
-          Load Background 2
-        </button>
-      </div>
       <Excalidraw
-        ref={(api) => {
-          excalidrawRef.current = api;
-          setExcalidrawAPI(api);
-        }}
+        excalidrawAPI={setExcalidrawAPI} // Set API using the excalidrawAPI prop
         initialData={{
-          appState: { showStats: false, theme: "light" },
+          appState: { theme: "light" },
         }}
         UIOptions={{
           canvasActions: { clearCanvas: true, loadScene: true, saveScene: true },
@@ -93,6 +64,21 @@ const ExcalidrawComponent = () => {
         <MainMenu>
           <MainMenu.DefaultItems.ToggleTheme />
         </MainMenu>
+
+        <Footer>
+          <button
+            onClick={() => addBackgroundImage("/templates/field.jpeg")}
+            style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
+          >
+            Load Background 1
+          </button>
+          <button
+            onClick={() => addBackgroundImage("/images/FisioLogo.png")}
+            style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
+          >
+            Load Background 2
+          </button>
+        </Footer>
       </Excalidraw>
     </div>
   );
