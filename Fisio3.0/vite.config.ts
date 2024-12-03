@@ -3,7 +3,7 @@
 import legacy from '@vitejs/plugin-legacy'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-
+import process from 'process';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -14,5 +14,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
-  }
+  },
+  define: {
+    'process.env': process.env,
+  },
 })

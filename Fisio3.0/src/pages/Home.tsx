@@ -1,22 +1,26 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {Excalidraw} from "@excalidraw/excalidraw";
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
+import ExcalidrawComponent from "../components/ExcalidrawComponent";
 
 const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Blank</IonTitle>
+          <IonTitle>FISIO</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Blank</IonTitle>
+            <IonTitle size="large">FISIO</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer />
+        <ExcalidrawComponent/>
+    
+
       </IonContent>
     </IonPage>
   );
