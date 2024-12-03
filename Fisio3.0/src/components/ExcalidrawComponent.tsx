@@ -3,45 +3,88 @@ import { Excalidraw, WelcomeScreen, MainMenu, Footer } from "@excalidraw/excalid
 
 const ExcalidrawComponent = () => {
   const [excalidrawAPI, setExcalidrawAPI] = useState<any>(null);
-
-  // Function to add a background image
   const addBackgroundImage = async (imageUrl: string) => {
     if (!excalidrawAPI) {
       console.error("Excalidraw API is not initialized yet");
       return;
     }
-
-    const image = new Image();
-    image.src = imageUrl;
-
-    image.onload = () => {
-      console.log("Image loaded successfully");
-
-      const element = {
-        id: `background-${Date.now()}`,
-        type: "image",
-        x: 0,
-        y: 0,
-        width: image.width,
-        height: image.height,
-        fileId: `image-${Date.now()}`,
-        locked: true, // Lock the background image immediately
+  
+    try {
+      // Fetch the image as a blob
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+  
+      // Convert blob to data URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataURL = reader.result as string;
+  
+        // Create a unique fileId
+        const fileId = `image-${Date.now()}`;
+  
+        // Register the image in the files object
+        const files = {
+          ...excalidrawAPI.getFiles(),
+          [fileId]: {
+            dataURL,
+            mimeType: blob.type,
+            created: Date.now(),
+            lastRetrieved: Date.now(),
+          },
+        };
+  
+        // Create the image element
+        const imageElement = {
+          type: "image",
+          version: 1,
+          versionNonce: 123456,
+          isDeleted: false,
+          id: `background-${Date.now()}`,
+          fillStyle: "hachure",
+          strokeWidth: 1,
+          strokeStyle: "solid",
+          roughness: 1,
+          opacity: 100,
+          angle: 0,
+          x: 0,
+          y: 0,
+          strokeColor: "#000000",
+          backgroundColor: "transparent",
+          width: 800, // Adjust as needed
+          height: 600, // Adjust as needed
+          seed: Math.floor(Math.random() * 100000),
+          groupIds: [],
+          strokeSharpness: "sharp",
+          boundElements: null,
+          updated: Date.now(),
+          fileId, // Link to the registered file
+          locked: true,
+        };
+  
+        // Update the scene with the new element and files
+        excalidrawAPI.updateScene({
+          elements: [...excalidrawAPI.getSceneElements(), imageElement],
+          files,
+        });
+  
+        // Center the view on the new image
+        excalidrawAPI.scrollToContent({
+          elements: [imageElement],
+        });
+  
+        console.log("Background image added to the scene.");
       };
-
-      excalidrawAPI.updateScene({
-        elements: [...excalidrawAPI.getSceneElements(), element],
-      });
-    };
-
-    image.onerror = () => {
-      console.error(`Failed to load image from ${imageUrl}`);
-    };
+  
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error(`Failed to load image from ${imageUrl}`, error);
+    }
   };
-
-  return (
+  
+    return (
     <div style={{ height: "100%", position: "relative" }}>
       <Excalidraw
-        excalidrawAPI={setExcalidrawAPI} // Set API using the excalidrawAPI prop
+        excalidrawAPI={setExcalidrawAPI}
         initialData={{
           appState: { theme: "light" },
         }}
