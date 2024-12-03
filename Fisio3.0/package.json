@@ -1,7 +1,7 @@
 {
-  "name": "ionic-app-base",
+  "name": "Fisio3.0",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/app": "6.0.2",
+    "@capacitor/core": "6.2.0",
+    "@capacitor/haptics": "6.0.2",
+    "@capacitor/keyboard": "6.0.3",
+    "@capacitor/status-bar": "6.0.2",
     "@ionic/react": "^8.0.0",
     "@ionic/react-router": "^8.0.0",
     "@types/react-router": "^5.1.20",
@@ -23,6 +28,7 @@
     "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
+    "@capacitor/cli": "6.2.0",
     "@testing-library/dom": ">=7.21.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -39,5 +45,6 @@
     "typescript": "^5.1.6",
     "vite": "~5.2.0",
     "vitest": "^0.34.6"
-  }
+  },
+  "description": "An Ionic project"
 }
