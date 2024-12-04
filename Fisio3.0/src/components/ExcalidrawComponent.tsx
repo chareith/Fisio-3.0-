@@ -49,8 +49,8 @@ const ExcalidrawComponent = () => {
           y: 0,
           strokeColor: "#000000",
           backgroundColor: "transparent",
-          width: 800, // Adjust as needed
-          height: 600, // Adjust as needed
+          width: 600, // Adjust as needed
+          height: 800, // Adjust as needed
           seed: Math.floor(Math.random() * 100000),
           groupIds: [],
           strokeSharpness: "sharp",
@@ -112,10 +112,16 @@ const ExcalidrawComponent = () => {
 
         <Footer>
           <button
-            onClick={() => addBackgroundImage("/templates/field2.jpg")}
+            onClick={() => addBackgroundImage("/templates/field2h.jpg")}
             style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
           >
             Load Field 1
+          </button>
+          <button
+            onClick={() => addBackgroundImage("/templates/field2half.jpg")}
+            style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
+          >
+            Load Field 2
           </button>
         </Footer>
       </Excalidraw>
