@@ -22,22 +22,21 @@ const ExcalidrawComponent = () => {
         // Create a unique fileId
         const fileId = `image-${Date.now()}`;
   
-        // Register the image in the files object
-        const files = {
-          ...excalidrawAPI.getFiles(),
-          [fileId]: {
+        // Register the image file using excalidrawAPI.addFiles
+        excalidrawAPI.addFiles([
+          {
+            id: fileId,
             dataURL,
             mimeType: blob.type,
             created: Date.now(),
-            lastRetrieved: Date.now(),
           },
-        };
+        ]);
   
         // Create the image element
         const imageElement = {
           type: "image",
           version: 1,
-          versionNonce: 123456,
+          versionNonce: Math.floor(Math.random() * 1000000),
           isDeleted: false,
           id: `background-${Date.now()}`,
           fillStyle: "hachure",
@@ -55,16 +54,16 @@ const ExcalidrawComponent = () => {
           seed: Math.floor(Math.random() * 100000),
           groupIds: [],
           strokeSharpness: "sharp",
-          boundElements: null,
+          boundElements: [],
           updated: Date.now(),
           fileId, // Link to the registered file
+          status: "pending",
           locked: true,
         };
   
-        // Update the scene with the new element and files
+        // Update the scene with the new element
         excalidrawAPI.updateScene({
           elements: [...excalidrawAPI.getSceneElements(), imageElement],
-          files,
         });
   
         // Center the view on the new image
@@ -80,6 +79,7 @@ const ExcalidrawComponent = () => {
       console.error(`Failed to load image from ${imageUrl}`, error);
     }
   };
+    
   
     return (
     <div style={{ height: "100%", position: "relative" }}>
@@ -110,16 +110,10 @@ const ExcalidrawComponent = () => {
 
         <Footer>
           <button
-            onClick={() => addBackgroundImage("/templates/field.jpeg")}
+            onClick={() => addBackgroundImage("/templates/field2.jpg")}
             style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
           >
             Load Background 1
-          </button>
-          <button
-            onClick={() => addBackgroundImage("/images/FisioLogo.png")}
-            style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
-          >
-            Load Background 2
           </button>
         </Footer>
       </Excalidraw>
