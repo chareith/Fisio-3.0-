@@ -98,14 +98,16 @@ const ExcalidrawComponent = () => {
               <img src="/images/FisioLogo.png" style={{ height: "50%" }} alt="Logo" />
             </WelcomeScreen.Center.Logo>
             <WelcomeScreen.Center.Heading>Welcome To Fisio!</WelcomeScreen.Center.Heading>
-            <WelcomeScreen.Center.Menu>
-              <WelcomeScreen.Center.MenuItemLoadScene />
-            </WelcomeScreen.Center.Menu>
           </WelcomeScreen.Center>
         </WelcomeScreen>
-
         <MainMenu>
-          <MainMenu.DefaultItems.ToggleTheme />
+          <MainMenu.DefaultItems.SaveAsImage/>
+          <MainMenu.DefaultItems.Export/>
+          <MainMenu.DefaultItems.ClearCanvas/>
+          <MainMenu.DefaultItems.LoadScene/>
+          <MainMenu.DefaultItems.ToggleTheme/>
+          <MainMenu.DefaultItems.ChangeCanvasBackground />
+
         </MainMenu>
 
         <Footer>
@@ -113,7 +115,7 @@ const ExcalidrawComponent = () => {
             onClick={() => addBackgroundImage("/templates/field2.jpg")}
             style={{ margin: "0 5px", padding: "5px 10px", cursor: "pointer" }}
           >
-            Load Background 1
+            Load Field 1
           </button>
         </Footer>
       </Excalidraw>
